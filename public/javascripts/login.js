@@ -13,7 +13,13 @@ app.controller('LoginController', function($scope, $http, $state, $rootScope, Mo
             $rootScope.token = res.data.token;
             $http.defaults.headers.common['Authorization'] = 'Bearer ' + res.data.token;
             console.log('LOGGED IN');
-            $state.transitionTo('home');
+            //get english & nihongo languages from server and set to rootScope
+            $http.get('/languages/getLanguages').then(function(res){
+                console.log('getting languages...');
+                $rootScope.languages = res.data.languages;
+                console.log($rootScope.languages);
+                $state.transitionTo('home');
+            });
         })
         .catch(function(err){
             $scope.error_message = err.data.error_message;
