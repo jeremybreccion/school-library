@@ -1,0 +1,15 @@
+User information or properties depend on register.html.
+
+So far there is no 'model' for users
+
+username is unique. database id is not used in operations.
+
+to get current user, there are two available methods (tho achievable in 1)
+    /users/current = user without _id & password
+    /session = token & user without _id & password
+
+@2018-02-21 15:17 = false statement for mailer.sendForgotPasswordEmail() is not working
+
+@2018-02-22 08:16
+    when image is updated, page needs to refresh
+

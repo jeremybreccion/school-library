@@ -1,0 +1,17 @@
+{
+    "secret": "Bjso)sidKS$ja#sKJS!!AAhuP&PjsdjhsdEBcjBJNDBS#$%&",
+    "database": {
+        "name": "mongodb://localhost:27017/users",
+        "collections": {
+            "accounts": "accounts"
+        }
+    },
+    "exempted_routes": [
+        "/session", 
+        "/users/login", 
+        "/users/register", 
+        "/users/logout", 
+        "/users/forgotPassword",
+        "/languages/getLanguages"
+    ]
+}
