@@ -1,6 +1,8 @@
 {
-    "sample_string": {
-        "english" : "I'm sleepy",
-        "日本語" : "ねむい"
+    "english":{
+        "sample_string" : "I'm sleepy"
+    },
+    "日本語":{
+       "sample_string" : "ねむい"
     }
 }

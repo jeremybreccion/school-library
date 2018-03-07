@@ -71,6 +71,12 @@ app.controller('SettingsController', function($scope, $http, ModalService, $root
         $http.put('/users/setLanguage/' + $scope.set_language).then(function(res){
             $scope.success_message = res.data.success_message;
             $rootScope.current_user.current_language = $scope.set_language;
+            //get english & nihongo languages from server and set to rootScope
+            $http.get('/languages/getLanguages').then(function(res){
+                console.log('getting languages...');
+                $rootScope.languages = res.data.languages;
+                console.log($rootScope.languages);
+            });
         }).catch(function(err){
             $scope.error_message = err.data.error_message;
         });
