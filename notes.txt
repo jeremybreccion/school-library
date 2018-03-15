@@ -1,15 +1,43 @@
-User information or properties depend on register.html.
+basic school library
 
-So far there is no 'model' for users
+USERS
+    Admin (librarian)
+    Teacher
+    Student
 
-username is unique. database id is not used in operations.
+COLLECTIONS
+    Accounts
+        schoolID
+        firstName
+        lastName
+        occupation (admin, teacher, student)
+        course (if occupation == student only)
 
-to get current user, there are two available methods (tho achievable in 1)
-    /users/current = user without _id & password
-    /session = token & user without _id & password
+    Books
+        bookID
+        name
+        author
+        genre
+        currentBorrower
+    
+    Logs
+        date
+        schoolID
+        bookID
+        action
 
-@2018-02-21 15:17 = false statement for mailer.sendForgotPasswordEmail() is not working
+USER FUNCTIONS
+    Common
+        view books
 
-@2018-02-22 08:16
-    when image is updated, page needs to refresh
+    Admin
+        add/edit/delete book info
+        approve/disapprove reservation requests
+        view book history
+        view logs
 
+    Teacher & Student
+        reserve books
+            
+
+        
