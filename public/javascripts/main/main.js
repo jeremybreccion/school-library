@@ -9,7 +9,7 @@ app.controller('MainController', function($scope, $rootScope, $http, $state){
             console.log('LOGGED OUT');
             $rootScope.current_user = {};
             $rootScope.token = undefined;
-            $state.transitionTo('login');
+            $state.transitionTo('home');
         });
     };
 });

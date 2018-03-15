@@ -1,1 +1,58 @@
-<h1>You must be an Admin since you can read this</h1>
+<div class="row">
+    <div class="col-md-3">
+        <p ng-bind="message"></p>
+        <button class="btn btn-primary" data-toggle="modal" data-target="#addBookModal">Add Book/s</button>
+        <hr>
+    </div>
+    <div class="col-md-9">
+        <input class="form-control" type="text" ng-model="search" placeholder="search here...">
+        <br>
+        <table class="table">
+            <thead>
+                <th>Title</th>
+                <th>Current Borrower</th>
+                <th>Duration</th>
+                <th></th>
+            </thead>
+            <tbody>
+                <tr ng-repeat="book in books | filter: search">
+                    <td ng-bind="book.title"></td>
+                    <td ng-bind="book.currentBorrower"></td>
+                    <td ng-bind="duration(book)"></td>
+                    <td>
+                        <button class="btn btn-default">View Borrow History</button>
+                        <button class="btn btn-primary">Change Duration</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>    
+
+<div id="addBookModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        <div class="modal-header"><b>New Book/s</b></div>
+        <form ng-submit="submit()">
+        <div class="modal-body">
+            <label>Title</label>
+            <input class="form-control" type="text" ng-model="book.title"><br>
+            <label>Author</label>
+            <input class="form-control" type="text" ng-model="book.author"><br>
+            <label>Genre</label>
+            <select class="form-control" ng-model="book.genre" multiple size=5><br>
+                <option ng-repeat="genre in genres">{{genre}}</option>
+            </select><br>
+            <label>Quantity</label>
+            <input class="form-control" type="number" ng-model="book.quantity" min="{{quantity.min}}" max="{{quantity.max}}"><br>
+            <label>Borrow Limit (days)</label>
+            <input class="form-control" type="number" ng-model="book.borrowLimit" min="{{borrowLimit.min}}" max="{{borrowLimit.max}}"><br>
+        </div>
+        <div class="modal-footer">
+            <button type="submit" class="btn btn-success">Save</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+        </form>
+        </div>
+    </div>
+</div>

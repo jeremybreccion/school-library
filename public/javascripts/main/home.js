@@ -1,3 +1,3 @@
-app.controller('HomeController', function($scope, $rootScope){
-    $scope.welcome_message = "What's your agenda today?";
+app.controller('HomeController', function($scope, $rootScope, BookService){
+    $scope.welcome_message = "Welcome to the Library";
 });

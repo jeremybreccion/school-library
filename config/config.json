@@ -3,7 +3,9 @@
     "database": {
         "name": "mongodb://localhost:27017/school-library",
         "collections": {
-            "accounts": "accounts"
+            "accounts": "accounts",
+            "books": "books",
+            "logs": "logs"
         }
     },
     "exempted_routes": [
@@ -12,6 +14,7 @@
         "/users/register", 
         "/users/logout", 
         "/users/forgotPassword",
-        "/languages/getLanguages"
+        "/languages/getLanguages",
+        "/books/getAll"
     ]
 }

@@ -30,17 +30,21 @@ COLLECTIONS
 
 
     Books
-        >bookID
-        name
+        >bookID (auto-generated)(incremental)
+        title
         author
-        genre
-        borrowDurationLimit (in days)
+        genre (can have more than 1)
+        quantity
+        borrowLimit (days)
         currentBorrower
+        borrowStart
+        borrowEnd
         
     Logs
         date (yyyy-MM-dd HH:mm)
         >schoolID
         >bookID
+        title
         action
 
 USER FUNCTIONS
@@ -48,12 +52,12 @@ USER FUNCTIONS
         view books
 
     Admin
-        *add/delete teacher & student accounts
         add/edit/delete book info
-        *approve/disapprove reservation requests
         set borrower of book
         view book history
         view logs
+        *add/delete teacher & student accounts
+        *approve/disapprove reservation requests
 
     Teacher & Student
         reserve books
@@ -62,6 +66,7 @@ USER FUNCTIONS
 
 FEATURES
     reservation prioritizes teachers, then first come first serve
+        - they set the start & end dates
         - once approved, currentBorrower of book is set
     notify borrowers if the borrowed book has reached the limit
     if borrowers do not return the book past limit, all reservation requests are automatically disapproved

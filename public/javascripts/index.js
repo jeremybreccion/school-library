@@ -34,13 +34,13 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider){
         parent: 'main',
         url: '/student',
         templateUrl: 'main/student.html',
-        //controller: 'UserController'
+        //controller: 'StudentController'
     })
     .state('admin', {
         parent: 'main',
         url: '/admin',
         templateUrl: 'main/admin.html',
-        //controller: 'AdminController'
+        controller: 'AdminController'
     });
 
     //401 == unauthorized http request. refer to app.js
@@ -68,17 +68,17 @@ app.run(function($rootScope, $state, $http, $window){
 
     //get english & nihongo languages from server and set to rootScope
     $http.get('/languages/getLanguages').then(function(res){
-        console.log('getting languages...');
+        ////console.log('getting languages...');
         $rootScope.languages = res.data.languages;
-        console.log($rootScope.languages);
+        //console.log($rootScope.languages);
     });
 
     //run once? OR RUN EVERY STATECHANGE TO DETERMINE IF SERVER RESTARTS?
     //need this here for enabling multiple tabs since each tab will @ first load will run this
     //disadvantage: double codes, double execution ??
-    console.log('getting token...');
+    ////console.log('getting token...');
     $http.get('/session').then(function(res){
-        //console.log(res);
+        ////console.log(res);
         $rootScope.token = res.data.token;
         $http.defaults.headers.common['Authorization'] = 'Bearer ' + res.data.token;
         $rootScope.current_user = res.data.user;
@@ -90,10 +90,10 @@ app.run(function($rootScope, $state, $http, $window){
     });
     
     $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams){
-        console.log('getting token...');
+        //console.log('getting token...');
         $http.get('/session').then(function(res){
-            //console.log(res);
-            console.log(res.data);
+            ////console.log(res);
+            //console.log(res.data);
             $rootScope.token = res.data.token;
             $http.defaults.headers.common['Authorization'] = 'Bearer ' + res.data.token;
             $rootScope.current_user = res.data.user;
@@ -102,35 +102,53 @@ app.run(function($rootScope, $state, $http, $window){
             $rootScope.current_user = {};
             $rootScope.token = undefined;
         });
-
+        //page validation may be done in backend (use $http service then process at server)
         //if user tries to access login or register page while already logged in
-        if($rootScope.token != undefined && (toState.name == "login" || toState.name == 'register')){
+        if($rootScope.token == undefined && toState.name != 'home' && toState.name != "login" && toState.name != 'register'){
+            alert('you must login first');
+            event.preventDefault();
+            $state.transitionTo('login');
+        }
+        else if($rootScope.token != undefined && (toState.name == "login" || toState.name == 'register')){
             alert('You are already logged in');
             event.preventDefault();
             $state.transitionTo('home');
         }
         //check if the user has access to the desired page
-        else if(!isPageAccessible($rootScope.current_user.role ,toState.name)){
+        else if(!isPageAccessible($rootScope.current_user.occupation ,toState.name)){
             alert('You are not authorized to access this page');
             event.preventDefault();
             $state.transitionTo('home');
         }
     });
 
-
-    function isPageAccessible(role, stateName){
+    function isPageAccessible(occupation, stateName){
         var isPageAccessible = true;
         
-        //allowed states for 'User' roles only
-        var allowedStates = ["login", "home", "register", "student", "settings"];
+        //allowed states for students only
+        var allowedStudentStates = ["home", "login", "register", "student", "settings"];
+        //admin
+        var allowedAdminStates = ["home", "login", "register", "admin", "settings"];
 
-        var isStateAllowed = allowedStates.find(function(state){
-            return state == stateName;
-        });
+
+        var isStateAllowed = [];
         
-        if(occupation == 'student' && isStateAllowed == undefined){
+        if(occupation == 'student'){
+           isStateAllowed = allowedStudentStates.find(function(state){
+                return state == stateName;
+            });
+        }
+        else if(occupation == 'admin'){
+            isStateAllowed = allowedAdminStates.find(function(state){
+                return state == stateName;
+            });
+        }
+
+        if(isStateAllowed == undefined){
             isPageAccessible = false;
         }
+        ////console.log(isStateAllowed)
+        ////console.log(isPageAccessible)
         return isPageAccessible;
     }
 });
