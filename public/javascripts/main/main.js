@@ -1,6 +1,8 @@
 app.controller('MainController', function($scope, $rootScope, $http, $state){
 
-    $scope.isAdmin = ($rootScope.current_user.role == 'Admin') ? true : false;
+    $scope.isAdmin = ($rootScope.current_user.occupation == 'admin') ? true : false;
+    $scope.isStudent = ($rootScope.current_user.occupation == 'student') ? true : false;
+
     
     $scope.logout = function(){
         $http.get('/users/logout').then(function(){

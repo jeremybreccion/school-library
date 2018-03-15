@@ -1,7 +1,7 @@
 {
     "secret": "Bjso)sidKS$ja#sKJS!!AAhuP&PjsdjhsdEBcjBJNDBS#$%&",
     "database": {
-        "name": "mongodb://localhost:27017/users",
+        "name": "mongodb://localhost:27017/school-library",
         "collections": {
             "accounts": "accounts"
         }

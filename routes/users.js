@@ -17,7 +17,7 @@ var multer = require('multer');
 var storage = multer.diskStorage({
   destination: './public/images/profile_pictures',
   filename: function(req, file, cb){
-    var new_filename = req.session.user.username + '.' + file.mimetype.toString().slice(6);
+    var new_filename = req.session.user.schoolID + '.' + file.mimetype.toString().slice(6);
     return cb(null, new_filename);
   }
 });
@@ -32,7 +32,7 @@ router.get('/', function(req, res, next) {
 });
 
 router.post('/login', function(req, res, next){
-  db.accounts.findOne({username: req.body.username}, function(err, user){
+  db.accounts.findOne({schoolID: req.body.schoolID}, function(err, user){
     if(err){
       res.status(400).send({error_message: 'Database Error. Contact Administrator'});
     }
@@ -45,7 +45,7 @@ router.post('/login', function(req, res, next){
       res.status(200).send({user: user, token: req.session.token});
     }
     else{
-      res.status(400).send({error_message: 'Username or Password is incorrect'});
+      res.status(400).send({error_message: 'schoolID or Password is incorrect'});
     }
   });
 });
@@ -53,18 +53,19 @@ router.post('/login', function(req, res, next){
 router.post('/register', function(req, res, next){
   //console.log(req.body);
   var inputted_user = {};
-  db.accounts.findOne({username: req.body.username}, function(err, user){
+  db.accounts.findOne({schoolID: req.body.schoolID}, function(err, user){
 
     if(err){
       console.log(err);
       res.status(400).send({error_message: 'Database error! Contact Administrator'});
     }
     else if(user){
-      res.status(400).send({error_message: 'Username already exists!'});
+      res.status(400).send({error_message: 'schoolID already exists!'});
     }
     else{
       inputted_user = req.body;
       inputted_user.password = bcrypt.hashSync(req.body.password, 10);
+      inputted_user.fullName = req.body.firstName + ' ' + req.body.lastName;
 
       db.accounts.insert(inputted_user, function(err){
         if(err){
@@ -83,7 +84,7 @@ router.post('/register', function(req, res, next){
 //this route is used but is optional. 
 //because when user has logged in, most of its details are stored in req.session.user
 router.get('/current', function(req, res, next){
-  db.accounts.findOne({username: req.session.user.username}, function(err, user){
+  db.accounts.findOne({schoolID: req.session.user.schoolID}, function(err, user){
     if(err){
       res.status(400).send({error_message: 'Database Error. Contact Administrator'});
     }
@@ -102,7 +103,7 @@ router.get('/current', function(req, res, next){
 
 router.put('/changePassword', function(req, res, next){
   //console.log(req.body);
-  db.accounts.findOne({username: req.body.username}, function(err, user){
+  db.accounts.findOne({schoolID: req.body.schoolID}, function(err, user){
     if(err){
       res.status(400).send({error_message: 'Database Error. Contact Administrator'});
     }
@@ -119,7 +120,7 @@ router.put('/changePassword', function(req, res, next){
       //correct old password, so update
       else{
         var hashed_password = bcrypt.hashSync(req.body.new, 10);
-        db.accounts.update({username: req.body.username}, {$set : {password: hashed_password}}, function(err){
+        db.accounts.update({schoolID: req.body.schoolID}, {$set : {password: hashed_password}}, function(err){
           if(err){
             res.status(400).send({error_message: 'Database Error. Contact Administrator'});
           }
@@ -145,14 +146,14 @@ router.post('/forgotPassword', function(req, res, next){
       //generate temporary password. but since hindi pa alam kung pano mag random, default muna and constant
       var temporary_new_password = "replacethistext";
       var hashed_password = bcrypt.hashSync(temporary_new_password, 10);
-      db.accounts.update({username: user.username}, {$set: {password: hashed_password}}, function(err){
+      db.accounts.update({schoolID: user.schoolID}, {$set: {password: hashed_password}}, function(err){
         if(err){
           res.status(400).send({error_message: 'Database Error. Contact Administrator'});
         }
         else{
           //send email here
           var tempUser = {
-            username: user.username,
+            schoolID: user.schoolID,
             email: user.email,
             password: temporary_new_password
           };
@@ -184,7 +185,7 @@ router.post('/profilePicture', function(req, res, next){
       else{
         //upload successful, store link to user
 
-        db.accounts.update({username: req.session.user.username}, {$set: {profile_picture: req.file.filename}}, function(err){
+        db.accounts.update({schoolID: req.session.user.schoolID}, {$set: {profile_picture: req.file.filename}}, function(err){
           if(err){
             res.status(400).send({error_message: 'Database Error. Contact Administrator'});
           }
@@ -200,7 +201,7 @@ router.post('/profilePicture', function(req, res, next){
 });
 
 router.put('/setLanguage/:language', function(req, res, next){
-  db.accounts.update({username: req.session.user.username}, {$set: {current_language: req.params.language}}, function(err){
+  db.accounts.update({schoolID: req.session.user.schoolID}, {$set: {current_language: req.params.language}}, function(err){
     if(err){
       res.status(400).send({error_message: 'Database error. Contact Administrator'});
     }

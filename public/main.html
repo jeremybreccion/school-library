@@ -3,22 +3,23 @@
         <div class="container-fluid">
             <div class="navbar-header">
                 <a ui-sref="home" class="navbar-brand">
-                    <span class="glyphicon glyphicon-fire"></span>
-                    Basic
+                    <span class="glyphicon glyphicon-education"></span>
+                    SL
                 </a>
             </div>
             <div>
                 <ul class="nav navbar-nav">
-                    <li><a ui-sref="user">User Page</a></li>
+                    <li><a ui-sref="student" ng-if="isStudent">Student Page</a></li>
                     <li><a ui-sref="admin" ng-if="isAdmin">Admin Page</a></li>
                 </ul>
             </div>
             <div>
                 <ul class="nav navbar-nav navbar-right">
-                    <li>
+                    <li ng-if="current_user.firstName == undefined"><a ui-sref="login">Login</a></li>
+                    <li ng-if="current_user.firstName != undefined">
                         <a class="dropdown-toggle" data-toggle="dropdown">
-                            <img ng-src="images/profile_pictures/{{current_user.profile_picture || 'default.jpg'}}" class="img-circle" height="20" width="20">
-                            {{current_user.first_name}}
+                            <img ng-src="images/profile_pictures/{{current_user.profilePicture || 'default.jpg'}}" class="img-circle" height="20" width="20">
+                            {{current_user.firstName}}
                             <span class="caret"></span>
                             <ul class="dropdown-menu">
                                 <li><a ui-sref="settings">Account Settings</a></li>

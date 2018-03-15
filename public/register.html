@@ -1,14 +1,14 @@
 <div class="container">
     <i style="color: red; padding: 0px">{{error_message}}</i><br>
     <form ng-submit="register()">
-        <label>Username:</label>
-        <input type="text" class="form-control" ng-model="user.username" required>
+        <label>SchoolID:</label>
+        <input type="text" class="form-control" ng-model="user.schoolID" required>
         <br>
         <label>First Name:</label>
-        <input type="text" class="form-control" ng-model="user.first_name" required>
+        <input type="text" class="form-control" ng-model="user.firstName" required>
         <br>
         <label>Last Name:</label>
-        <input type="text" class="form-control" ng-model="user.last_name" required>
+        <input type="text" class="form-control" ng-model="user.lastName" required>
         <br>
         <label>Password:</label>
         <input type="password" class="form-control" ng-model="user.password" required>
@@ -19,13 +19,15 @@
         <label>Email:</label>
         <input type="email" class="form-control" ng-model="user.email" required>
         <br>
-        <label>Role:</label>
-        <select class="form-control" ng-model="user.role" required>
+        <label>Occupation:</label>
+        <select class="form-control" ng-model="user.occupation" required>
             <option value="">-- Select --</option>
-            <option>Admin</option>
-            <option>User</option>
+            <option>admin</option>
+            <option>teacher</option>
+            <option>student</option>
         </select>
         <br>
+        
         <button type="submit" class="btn btn-primary">
             <span class="glyphicon glyphicon-save"></span>
             &nbsp;

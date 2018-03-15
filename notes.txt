@@ -1,29 +1,46 @@
 basic school library
 
+* - not yet implemented
+> - unique field
+
 USERS
     Admin (librarian)
     Teacher
     Student
 
 COLLECTIONS
+    *Defaults (by Admin only) 
+        Books
+            genre
+            borrowDurationLimit
+        Logs
+            action
+
     Accounts
-        schoolID
+        >schoolID ('1' + yy + nnnnn)
+        password
         firstName
         lastName
+        fullName (auto-generated)
         occupation (admin, teacher, student)
         course (if occupation == student only)
+        email
+        currentLanguage
+        profilePicture
+
 
     Books
-        bookID
+        >bookID
         name
         author
         genre
+        borrowDurationLimit (in days)
         currentBorrower
-    
+        
     Logs
-        date
-        schoolID
-        bookID
+        date (yyyy-MM-dd HH:mm)
+        >schoolID
+        >bookID
         action
 
 USER FUNCTIONS
@@ -31,13 +48,31 @@ USER FUNCTIONS
         view books
 
     Admin
+        *add/delete teacher & student accounts
         add/edit/delete book info
-        approve/disapprove reservation requests
+        *approve/disapprove reservation requests
+        set borrower of book
         view book history
         view logs
 
     Teacher & Student
         reserve books
-            
+        view reserved books
+        tag unavailable books
+
+FEATURES
+    reservation prioritizes teachers, then first come first serve
+        - once approved, currentBorrower of book is set
+    notify borrowers if the borrowed book has reached the limit
+    if borrowers do not return the book past limit, all reservation requests are automatically disapproved
+
+NOTES:
+    NO VALIDATION for registration aside from unique
+        expecting correct entries (e.g. schoolID)
+    return of books are done manually (reception?)
+    books are only categorized by genre
+    
+
+
 
         
